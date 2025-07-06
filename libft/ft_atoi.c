@@ -7,23 +7,26 @@ int	ft_atoi(const char *str)
 	int		sign;
 
 	i = 0;
-	while (str[i] == 32 || (str[i] >= 9 && str[i] <= 13))
+	num = 0;
+	sign = 1;
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
-	sign = -1;
-	if (str[i] == '-' || str[i] == '+')
+	if (str[i] == '+' || str[i] == '-')
 	{
 		if (str[i] == '-')
 			sign = -1;
 		i++;
 	}
-	num = 0;
-	while (str[i] >= 48 && str[i] <= 57)
+	while (str[i] >= '0' && str[i] <= '9')
 	{
+		if (num > (LONG_MAX - (str[i] - '0')) / 10)
+		{
+			if (sign == 1)
+				return (-1);
+			else
+				return (0);
+		}
 		num = num * 10 + (str[i] - '0');
-		if (sign == 1 && num > INT_MAX)
-			return (-1);
-		if (sign == -1 && num < INT_MIN)
-			return (0);
 		i++;
 	}
 	return ((int)(num * sign));

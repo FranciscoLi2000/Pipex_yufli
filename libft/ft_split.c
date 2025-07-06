@@ -1,22 +1,33 @@
 #include "libft.h"
 
-static int	ft_isspace(int c)
+static void	*free_split(char **tab, size_t filled)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
+	size_t	i;
+
+	i = 0;
+	while (i < filled)
+	{
+		free(tab[i]);
+		i++;
+	}
+	free(tab);
+	return (NULL);
 }
 
-static int	count_words(char *str)
+static size_t	count_words(char const *s, char c)
 {
-	int	i;
-	int	count;
-	int	in_word;
+	size_t	i;
+	size_t	count;
+	int		in_word;
 
+	if (!s)
+		return (0);
 	i = 0;
 	count = 0;
 	in_word = 0;
-	while (str[i])
+	while (s[i])
 	{
-		if (ft_isspace(str[i]))
+		if (s[i] == c)
 			in_word = 0;
 		else if (in_word == 0)
 		{
@@ -28,49 +39,34 @@ static int	count_words(char *str)
 	return (count);
 }
 
-char	**ft_split(char *str)
+char	**ft_split(char const *s, char c)
 {
-	char	**result;
-	int		i;
-	int		start;
-	int		end;
-	int		word;
+	size_t	i;
+	size_t	start;
+	size_t	word;
+	size_t	total;
+	char	**res;
 
+	if (!s)
+		return (NULL);
+	total = count_words(s, c);
+	res = malloc((total + 1) * sizeof(char *));
+	if (!res)
+		return (NULL);
 	i = 0;
 	word = 0;
-	if (!str)
-		return (NULL);
-	result = (char **)malloc((count_words(str) + 1) * sizeof(char *));
-	if (!result)
-		return (NULL);
-	while (str[i])
+	while (word < total)
 	{
-		while (str[i] && ft_isspace(str[i]))
+		while (s[i] == c)
 			i++;
 		start = i;
-		while (str[i] && !ft_isspace(str[i]))
+		while (s[i] && s[i] != c)
 			i++;
-		end = i;
-		if (end > start)
-			result[word++] = ft_substr(str, start, end - start);
+		res[word] = ft_substr(s, start, i - start);
+		if (!res[word])
+			return (free_split(res, word));
+		word++;
 	}
-	result[word] = NULL;
-	return (result);
+	res[word] = NULL;
+	return (res);
 }
-/*
-#include <stdio.h>
-
-int	main(void)
-{
-	char	**palabras = ft_split("  hola\tmundo\n42  libft ");
-	int		i = 0;
-
-	while (palabras[i])
-	{
-		printf("Palabra %d: %s\n", i, palabras[i]);
-		free(palabras[i]);
-		i++;
-	}
-	free(palabras);
-	return (0);
-}*/

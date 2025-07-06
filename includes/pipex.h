@@ -9,12 +9,15 @@
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <errno.h>
+# include <stdio.h>
 
+void	free_split(char **args);
+char	*find_command_path(char *cmd);
 void	execute_command(char *cmd, char **envp);
-int		open_infile(char *filename);
-int		open_outfile(char *filename);
-void	child_process_1(int infile_fd, int pipefd[2], char *cmd, char **envp);
-void	child_process_2(int outfile_fd, int pipefd[2], char *cmd, char **envp);
-void	ft_perror_exit(const char *msg);
+char	*ft_strcpy(char *s1, char *s2);
+char	*ft_strcat(char *s1, char *s2);
+void	cmd1_process(int pipefd[2], int input_fd, char *cmd, char **envp);
+void	cmd2_process(int pipefd[2], int output_fd, char *cmd, char **envp);
+void	pipe_process(int p_fd[2], int fd1, int fd2, char **argv, char **envp);
 
 #endif
