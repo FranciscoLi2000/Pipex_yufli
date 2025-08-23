@@ -49,7 +49,7 @@ void	child_process_2(t_pipex *px, char *cmd);
 /*==============================*/
 /*	MAIN ENTRYPOINT		*/
 /*==============================*/
-void	pipex(t_pipex *px, char **argv);
+int		pipex(t_pipex *px, char **argv);
 int		main(int argc, char **argv, char **envp);
 
 #endif

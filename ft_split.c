@@ -27,6 +27,7 @@ char	**ft_split(char *s, char set)
 	int		i;
 	int		j;
 	int		start;
+	int		end;
 
 	i = 0;
 	j = 0;
@@ -40,12 +41,13 @@ char	**ft_split(char *s, char set)
 	{
 		if (s[i] != set && start < 0)
 			start = i;
-		else if ((s[i] == set || s[i + 1] == '\0') && start >= 0)
+		if ((s[i] == set || s[i + 1] == '\0') && start >= 0)
 		{
 			if (s[i] == set)
-				res[j++] = ft_substr(s, start, i);
+				end = i;
 			else
-				res[j++] = ft_substr(s, start, i + 1);
+				end = i + 1;
+			res[j++] = ft_substr(s, start, end - start);
 			start = -1;
 		}
 		i++;

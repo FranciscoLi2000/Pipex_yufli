@@ -3,15 +3,17 @@
 char	*ft_substr(char *s, int start, int len)
 {
 	int		i;
+	int		s_len;
 	char	*res;
 
 	if (!s)
 		return (NULL);
-	if (start >= ft_strlen(s))
+	s_len = ft_strlen(s);
+	if (start >= s_len)
 		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	res = (char *)malloc(len + 1);
+	if (len > s_len - start)
+		len = s_len - start;
+	res = malloc(len + 1);
 	if (!res)
 		return (NULL);
 	i = 0;
