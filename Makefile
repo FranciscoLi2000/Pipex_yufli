@@ -1,38 +1,37 @@
-# ========= CONFIG ============
 NAME		= pipex
+
+SRC		= \
+		execute_command.c ft_putchar_fd.c ft_strdup.c ft_strncmp.c \
+		pipex.c find_command_path.c ft_putstr_fd.c ft_strjoin.c \
+		ft_substr.c free_str_array.c ft_split.c ft_strlen.c \
+		main.c
+
+SRCS		= ${addprefix ${PRE}, ${SRC}}
+
+OBJS		= ${SRCS:.c=.o}
+
+PRE		= ./srcs/
+HEAD		= ./includes/
+
+RM		= rm -f
 
 CC		= cc
 CFLAGS		= -Wall -Wextra -Werror
 
-SRCS		= execute_command.c ft_putstr_fd.c ft_strlen.c pipex.c \
-		find_command_path.c ft_split.c ft_strncmp.c free_str_array.c \
-		ft_strdup.c ft_substr.c ft_putchar_fd.c ft_strjoin.c main.c
+all: ${NAME}
 
-OBJS		= $(SRCS:.c=.o)
+.c.o:
+	${CC} ${CFLAGS} -c -I ${HEAD} $< -o ${<:.c=.o}
 
-INCLUDES	= pipex.h
+${NAME}: ${OBJS}
+	${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
-# ========= RULES =============
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
-
-%.o: %.c $(INCLUDES)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-# ========= CLEANING ==========
 clean:
-	rm -rf $(OBJS)
+	${RM} ${OBJS}
 
 fclean: clean
-	rm -f $(NAME)
+	${RM} ${NAME}
 
 re: fclean all
 
-# ========= BONUS (可选) =======
-# debug:
-#	$(MAKE) CFLAGS="-g3 -fsanitize=address -Wall -Wextra -Werror" re
-
-# ========= PHONY RULES ========
 .PHONY: all clean fclean re
